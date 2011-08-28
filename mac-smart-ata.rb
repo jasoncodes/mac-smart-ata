@@ -30,8 +30,12 @@ profile.each do |section|
         data[key] = value
       end
 
-      if data['Reallocated_Sector_Ct']
-        puts "#{item['bay_name']} (#{item['bsd_name']}): #{data['Temperature_Celsius']}°C, #{data['Reallocated_Sector_Ct']} sector reallocations"
+      if data.values_at(*%w(Reallocated_Sector_Ct Current_Pending_Sector)).any?
+        msg = "#{item['bay_name']} (#{item['bsd_name']}): #{data['Temperature_Celsius']}°C, #{data['Reallocated_Sector_Ct']} sector reallocations"
+        if data['Current_Pending_Sector'] && Integer(data['Current_Pending_Sector']) > 0
+          msg << " (#{data['Current_Pending_Sector']} pending)"
+        end
+        puts msg
       end
     end
   end

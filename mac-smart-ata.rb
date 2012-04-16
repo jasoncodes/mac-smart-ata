@@ -20,6 +20,8 @@ profile.each do |section|
       next unless item['bay_name'] && item['bsd_name']
 
       lines = `smartctl -s on -a #{item['bsd_name']}`.split("\n")
+      next if lines.last =~ /Operation not supported by device$/
+
       header = lines.grep(/^ID#/).first
       header_idx = lines.index header
       data = {}

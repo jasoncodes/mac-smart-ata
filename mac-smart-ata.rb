@@ -24,6 +24,12 @@ profile.each do |section|
 
       header = lines.grep(/^ID#/).first
       header_idx = lines.index header
+      unless header_idx
+        puts "Error detecting #{item['bay_name']} (#{item['bsd_name']}):"
+        puts "\t#{lines.join "\t\n  "}"
+        break
+      end
+
       data = {}
       lines[header_idx+1..-1].each do |row|
         break if row.empty?
